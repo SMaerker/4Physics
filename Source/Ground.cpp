@@ -4,7 +4,7 @@
 
 Ground::Ground()
 {
-	body.setFillColor(sf::Color::Blue);
+	body.setFillColor(sf::Color::White);
 	body.setPosition(0, 475);
 }
 

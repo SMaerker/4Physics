@@ -2,6 +2,9 @@
 //Optimize checks in updatePosition
 //Collision detection
 //Ground impact
+//Drag tool
+//Menu
+//Charges
 
 
 #include "stdafx.h"
@@ -11,6 +14,7 @@
 #include "Slider.h"
 #include "Block.h"
 #include "Ground.h"
+#include "Drag.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -18,6 +22,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	int width = 800;
 	int height = 500;
 	
+	Drag h;
+
 	//Initialize window
 	sf::RenderWindow window(sf::VideoMode(width, height), "Sort!");
 	window.setFramerateLimit(60.0f);
@@ -61,6 +67,9 @@ int _tmain(int argc, _TCHAR* argv[])
 				else{
 					initCoords = sf::Mouse::getPosition(window);
 					initMouseTime = time.asSeconds();
+
+					h.setUse(true);
+					h.updateInit(initCoords);
 				}
 
 
@@ -68,11 +77,15 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 
 			else if (event.type == sf::Event::MouseButtonReleased){
-				population.push_back(Block(sf::Mouse::getPosition(window), sf::Vector2i((sf::Mouse::getPosition(window).x - initCoords.x) / (time.asSeconds() - initMouseTime), (sf::Mouse::getPosition(window).y - initCoords.y) / (time.asSeconds() - initMouseTime)), time.asSeconds()));
+				h.setUse(false);
+				population.push_back(Block(sf::Vector2i(initCoords.x - 15, initCoords.y - 10), sf::Vector2i((sf::Mouse::getPosition(window).x - initCoords.x) / (time.asSeconds() - initMouseTime), (sf::Mouse::getPosition(window).y - initCoords.y) / (time.asSeconds() - initMouseTime)), time.asSeconds()));
 			}
 
-
+			
 		}
+
+		h.updateEnd(sf::Mouse::getPosition(window));
+
 
 		window.clear();
 
@@ -82,6 +95,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 
 		floor.drawGround(&window);
+
+		h.drawIndicator(&window);
 
 		window.display();
 
