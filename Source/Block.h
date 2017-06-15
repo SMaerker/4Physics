@@ -2,7 +2,7 @@
 class Block
 {
 public:
-	Block(sf::Vector2i coords, float time);
+	Block(sf::Vector2i coords, sf::Vector2i vel, float time);
 	~Block();
 
 	

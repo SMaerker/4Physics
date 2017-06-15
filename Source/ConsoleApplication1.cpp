@@ -1,5 +1,8 @@
 //TODO
 //Optimize checks in updatePosition
+//Collision detection
+//Ground impact
+
 
 #include "stdafx.h"
 #include <SFML\Graphics.hpp>
@@ -32,6 +35,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	//Should get rid of this for now but oh well.
 	Slider foo;
 
+	float initMouseTime;
+	sf::Vector2i initCoords;
 
 	while (window.isOpen())
 	{ 
@@ -54,9 +59,16 @@ int _tmain(int argc, _TCHAR* argv[])
 
 				//Create a new block
 				else{
-					population.push_back(Block(sf::Vector2i(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y), time.asSeconds()));
+					initCoords = sf::Mouse::getPosition(window);
+					initMouseTime = time.asSeconds();
 				}
 
+
+
+			}
+
+			else if (event.type == sf::Event::MouseButtonReleased){
+				population.push_back(Block(sf::Mouse::getPosition(window), sf::Vector2i((sf::Mouse::getPosition(window).x - initCoords.x) / (time.asSeconds() - initMouseTime), (sf::Mouse::getPosition(window).y - initCoords.y) / (time.asSeconds() - initMouseTime)), time.asSeconds()));
 			}
 
 
